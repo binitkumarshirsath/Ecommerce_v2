@@ -3,17 +3,17 @@ import User from "../model/userModel.js";
 
 const registerController = async(req,res)=>{
     const saltRound = 10;
-    const { email, name, password, phone } = req.body;
-    if (!email || !name || !password || !phone) {
+    const { email, name, password} = req.body;
+    if (!email || !name || !password) {
       return res
-        .status(400)
+        .status(200)
         .json({ success: false, message: "Empty fields found" });
     }
     try {
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res
-          .status(400)
+          .status(200)
           .json({ message: "User Already Exists", success: false });
       }
       bcyrpt.hash(password, saltRound, function (err, hash) {
@@ -28,7 +28,6 @@ const registerController = async(req,res)=>{
           name,
           email,
           password: hash,
-          phone,
         });
         newUser.save();
         return res

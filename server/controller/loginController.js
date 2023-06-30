@@ -5,15 +5,15 @@ import jwt from "jsonwebtoken";
 const loginController = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res.status(400).json({ success: false, msg: "Empty Fields found" });
+    return res.status(200).json({ success: false, message: "Empty Fields found" });
   }
 
   try {
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       return res
-        .status(400)
-        .json({ success: false, msg: "User not registered!" });
+        .status(200)
+        .json({ success: false, message: "User not registered!" , navigate : true });
     }
     const token = await jwt.sign(
       { _id: existingUser._id },
@@ -25,8 +25,10 @@ const loginController = async (req, res) => {
       if (result === true) {
         return res.status(200).json({
           success: true,
-          msg: "User Logged in",
+          message: "User Logged in",
           user: {
+            _id : existingUser._id,
+            name : existingUser.name,
             email: existingUser.email,
             isAdmin: existingUser.isAdmin,
           },
@@ -34,8 +36,8 @@ const loginController = async (req, res) => {
         });
       } else {
         return res
-          .status(400)
-          .json({ success: false, msg: "Password doesnt match" });
+          .status(200)
+          .json({ success: false, message: "Wrong password entered" });
       }
     });
   } catch (error) {
@@ -43,7 +45,7 @@ const loginController = async (req, res) => {
     return res.status(401).json({
       success: false,
       error,
-      msg: "Error in login",
+      message: "Error in login",
     });
   }
 };
