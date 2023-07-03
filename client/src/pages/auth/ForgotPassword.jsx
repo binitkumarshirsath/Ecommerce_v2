@@ -2,50 +2,65 @@ import { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/authContext";
-export default function Login() {
-  const navigate = useNavigate();
-  const [auth, setAuth] = useAuth();
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+export default function ForgotPassword() {
   const [user, setUser] = useState({
+    
     email: "",
-    password: "",
+    answer : "",
+    newPassword: "",
   });
+  const navigate = useNavigate();
+  function handleOnChange(e) {
+    const { name, value } = e.target;
+    setUser((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  }
 
-  async function handleSubmit(e) {
+  async function handleFormSubmit(e) {
     e.preventDefault();
+    // Perform validation checks here
+    if (!validateEmail(user.email)) {
+      toast("Please enter a valid email address");
+      return;
+    }
+    if (user.newPassword.length < 6) {
+      toast("Password should be at least 6 characters long");
+      return;
+    }
+   
     try {
       const response = await axios.post(
-        process.env.REACT_APP_API + "api/login",
+        process.env.REACT_APP_API+"api/forgetpassword",
         user
       );
-      localStorage.setItem("auth", JSON.stringify(response.data));
-      setAuth({
-        ...auth,
-        user: response.data.user,
-        token: response.data.token,
-      });
+      
       if (response.data.success) {
-        toast(response.data.message);
+        toast("USER PASSWORD UPDATED!");
+        setUser({
+          answer: "",
+          email: "",
+          newPassword: "",
+        });
         setTimeout(() => {
-          navigate("/");
-        }, 3000);
-      } else {
+          navigate("/login");
+        }, 2000);
+      }else{
         toast(response.data.message);
       }
+
     } catch (error) {
-      console.log("Error in LOGIN " + error);
+      console.log(error);
     }
   }
 
-  function handleOnChange(e) {
-    const { name, value } = e.target;
-    setUser((prevData) => {
-      return {
-        ...prevData,
-        [name]: value,
-      };
-    });
+  function validateEmail(email) {
+    // Basic email validation using a regular expression
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
   }
 
   return (
@@ -59,18 +74,20 @@ export default function Login() {
                   <div className="row justify-content-center">
                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                       <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                        LOG IN
+                        Update Password
                       </p>
-                      <form className="mx-1 mx-md-4">
-                        <div className="d-flex flex-row align-items-center mb-4"></div>
+                      <form
+                        className="mx-1 mx-md-4"
+                        onSubmit={handleFormSubmit}
+                      >
+                        
                         <div className="d-flex flex-row align-items-center mb-4">
                           <i className="fas fa-envelope fa-lg me-3 fa-fw" />
                           <div className="form-outline flex-fill mb-0">
                             <input
                               type="email"
-                              id="form3Example3c"
-                              className="form-control"
                               name="email"
+                              className="form-control"
                               value={user.email}
                               onChange={handleOnChange}
                             />
@@ -83,44 +100,56 @@ export default function Login() {
                           </div>
                         </div>
                         <div className="d-flex flex-row align-items-center mb-4">
+                          <i className="fas fa-envelope fa-lg me-3 fa-fw" />
+                          <div className="form-outline flex-fill mb-0">
+                            <input
+                              type="text"
+                              name="answer"
+                              className="form-control"
+                              value={user.answer}
+                              onChange={handleOnChange}
+                            />
+                            <label
+                              className="form-label"
+                              htmlFor="form3Example3c"
+                            >
+                              Whats your favourite anime ?
+                            </label>
+                          </div>
+                        </div>
+                        <div className="d-flex flex-row align-items-center mb-4">
                           <i className="fas fa-lock fa-lg me-3 fa-fw" />
                           <div className="form-outline flex-fill mb-0">
                             <input
-                              name="password"
-                              onChange={handleOnChange}
-                              value={user.password}
                               type="password"
-                              id="form3Example4c"
+                              name="newPassword"
                               className="form-control"
+                              value={user.newPassword}
+                              onChange={handleOnChange}
                             />
-                            <div className="d-flex justify-content-between">
-                              <label
-                                className="form-label"
-                                htmlFor="form3Example4c"
-                              >
-                                Password
-                              </label>
-                              <Link to = {'/forgetpassword'}>
-                                Forgot password
-                              </Link>
-                            </div>
+                            <label
+                              className="form-label"
+                              htmlFor="form3Example4c"
+                            >
+                              New Password
+                            </label>
                           </div>
                         </div>
-
+                        
+                        
                         <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                           <button
-                            type="button"
+                            type="submit"
                             className="btn btn-secondary btn-lg"
-                            onClick={handleSubmit}
                           >
-                            Login
+                            Update Password
                           </button>
                         </div>
                       </form>
                     </div>
                     <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                       <img
-                        src="https://img.freepik.com/free-vector/tiny-people-carrying-key-open-padlock_74855-16292.jpg?w=1060&t=st=1688144518~exp=1688145118~hmac=d841864fefde856d70b73a5c86f77dffb6ad366c39dd7159dff411edbd09a782"
+                        src="https://img.freepik.com/free-vector/reset-password-concept-illustration_114360-7886.jpg?w=740&t=st=1688226994~exp=1688227594~hmac=8f18935d0799ec1ca54ce0292aadd3cf8a6daeea6a2701c69dd9a09f32a50893"
                         className="img-fluid"
                         alt="Sample "
                       />

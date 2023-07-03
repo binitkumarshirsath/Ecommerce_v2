@@ -1,10 +1,10 @@
-import bcyrpt from "bcrypt";
+import bcrypt from "bcrypt";
 import User from "../model/userModel.js";
 
 const registerController = async(req,res)=>{
     const saltRound = 10;
-    const { email, name, password} = req.body;
-    if (!email || !name || !password) {
+    const { email, name, password , answer} = req.body;
+    if (!email || !name || !password || !answer) {
       return res
         .status(200)
         .json({ success: false, message: "Empty fields found" });
@@ -16,11 +16,11 @@ const registerController = async(req,res)=>{
           .status(200)
           .json({ message: "User Already Exists", success: false });
       }
-      bcyrpt.hash(password, saltRound, function (err, hash) {
+      bcrypt.hash(password, saltRound, function (err, hash) {
         if (err) {
           console.log(err);
           return res
-            .status(400)
+            .status(200)
             .json({ success: false, message: "Error in Bcyrpt" });
         }
   
@@ -28,6 +28,7 @@ const registerController = async(req,res)=>{
           name,
           email,
           password: hash,
+          answer : answer.toLowerCase(),
         });
         newUser.save();
         return res

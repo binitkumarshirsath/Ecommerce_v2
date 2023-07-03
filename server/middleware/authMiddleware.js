@@ -13,15 +13,15 @@ const requireSignIn = (req, res, next) => {
     console.log(error);
     return res
       .status(400)
-      .json({ success: false, error, msg: "Error in Require Sign in" });
+      .json({ success: false, error, message: "Error in Require Sign in" });
   }
 };
 
 const isAdmin = async(req, res, next) => {
-    const email = req.body.email;
+  const email = req.body.email;
   const user = await User.findOne({email});
-  console.log(user);
-  if (!user.isAdmin) {
+  // console.log(user.isAdmin);
+  if (user && !user.isAdmin) {
     return res.status(401).json({ success: false, msg: "Unauthorized Access" });
   } else {
     next();

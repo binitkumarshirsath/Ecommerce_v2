@@ -8,6 +8,7 @@ export default function Signup() {
   const [user, setUser] = useState({
     name: "",
     email: "",
+    answer : "",
     password: "",
     cPassword: "",
   });
@@ -24,21 +25,21 @@ export default function Signup() {
     e.preventDefault();
     // Perform validation checks here
     if (!validateEmail(user.email)) {
-      alert("Please enter a valid email address");
+      toast("Please enter a valid email address");
       return;
     }
     if (user.password.length < 6) {
-      alert("Password should be at least 6 characters long");
+      toast("Password should be at least 6 characters long");
       return;
     }
     if (user.password !== user.cPassword) {
-      alert("Passwords do not match");
+      toast("Passwords do not match");
       return;
     }
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/register",
+        process.env.REACT_APP_API+"api/register",
         user
       );
       
@@ -60,7 +61,6 @@ export default function Signup() {
     } catch (error) {
       console.log(error);
     }
-    // If all validations pass, proceed with form submission or further actions
   }
 
   function validateEmail(email) {
@@ -119,6 +119,24 @@ export default function Signup() {
                               htmlFor="form3Example3c"
                             >
                               Your Email
+                            </label>
+                          </div>
+                        </div>
+                        <div className="d-flex flex-row align-items-center mb-4">
+                          <i className="fas fa-envelope fa-lg me-3 fa-fw" />
+                          <div className="form-outline flex-fill mb-0">
+                            <input
+                              type="text"
+                              name="answer"
+                              className="form-control"
+                              value={user.answer}
+                              onChange={handleOnChange}
+                            />
+                            <label
+                              className="form-label"
+                              htmlFor="form3Example3c"
+                            >
+                              Whats your favourite anime ?
                             </label>
                           </div>
                         </div>
