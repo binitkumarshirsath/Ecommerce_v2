@@ -18,10 +18,12 @@ const requireSignIn = (req, res, next) => {
 };
 
 const isAdmin = async(req, res, next) => {
-  const email = req.body.email;
-  const user = await User.findOne({email});
+  const email = req.user.email;
+  console.log(req.user);
+  
+  const user = await User.findById({_id:req.user._id});
   // console.log(user.isAdmin);
-  if (user && !user.isAdmin) {
+  if (!user.isAdmin) {
     return res.status(401).json({ success: false, msg: "Unauthorized Access" });
   } else {
     next();

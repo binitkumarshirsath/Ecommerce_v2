@@ -3,8 +3,9 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
-
+import { useNavigate } from "react-router-dom";
 function Header() {
+  const navigate = useNavigate();
   const [auth, setAuth] = useAuth();
 
   function handleLogout() {
@@ -14,6 +15,7 @@ function Header() {
       token: null,
     });
     localStorage.removeItem("auth");
+    navigate('/login');
   }
   return (
     <Navbar expand="lg" className="bg-dark-subtle py-2 shadow">
