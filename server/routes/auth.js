@@ -1,11 +1,11 @@
 import express from "express";
 const router = express.Router();
-import registerController from "../controller/registerController.js";
-import loginController from "../controller/loginController.js";
-import {requireSignIn , isAdmin} from "../middleware/authMiddleware.js"
+import registerController  from "../controller/authController/registerController.js";
+import loginController from "../controller/authController/loginController.js";
+import { isAdmin,requireSignIn } from "../middleware/authMiddleware.js";
 import test from "../controller/testController.js";
-import protectedRoute from "../controller/protectedRoute.js";
-import forgetpasswordController from "../controller/forgetPasswordController.js";
+import protectedRoute from "../controller/authController/protectedRoute.js";
+import forgetpasswordController from "../controller/authController/forgetPasswordController.js";
 //Registration : Method POST
 router.post("/register",registerController);
 

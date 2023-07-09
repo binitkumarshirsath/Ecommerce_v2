@@ -1,5 +1,5 @@
+import User from "../../model/userModel.js";
 import bcrypt from "bcrypt";
-import User from "../model/userModel.js";
 
 const registerController = async(req,res)=>{
     const saltRound = 10;

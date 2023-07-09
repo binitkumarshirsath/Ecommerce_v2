@@ -19,7 +19,6 @@ const requireSignIn = (req, res, next) => {
 
 const isAdmin = async(req, res, next) => {
   const email = req.user.email;
-  console.log(req.user);
   
   const user = await User.findById({_id:req.user._id});
   // console.log(user.isAdmin);

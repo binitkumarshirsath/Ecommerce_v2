@@ -1,5 +1,5 @@
-import bcyrpt from "bcrypt";
-import User from "../model/userModel.js";
+import User from "../../model/userModel.js";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const loginController = async (req, res) => {
@@ -21,7 +21,7 @@ const loginController = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    bcyrpt.compare(password, existingUser.password, function (err, result) {
+    bcrypt.compare(password, existingUser.password, function (err, result) {
       if (result === true) {
         return res.status(200).json({
           success: true,
