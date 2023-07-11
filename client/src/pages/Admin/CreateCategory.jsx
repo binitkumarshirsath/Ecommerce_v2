@@ -110,49 +110,53 @@ export default function CreateCategory() {
               handleSubmit={handleSubmit}
             />{" "}
             <div className="my-3">
-              <h3> Manage Categories</h3>
-              <div className="table-responive">
-                <table className="table w-75">
-                  <thead className="thead-dark">
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Category</th>
-                      <th scope="col">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {category?.map((item, i) => {
-                      return (
-                        <tr key={item._id}>
-                          <th scope="row">{i + 1}</th>
-                          <td>{item.name}</td>
-                          <td>
-                            <button
-                              className="btn btn-secondary m-2"
-                              onClick={() => {
-                                setUpdatedName(item.name);
-                                showModal();
-                                setSelected(item);
-                              }}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="btn btn-danger m-2"
-                              onClick={() => {
-                                showDeleteModal();
-                                setSelected(item);
-                              }}
-                            >
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+              <h3 className=" m-2">Manage Categories</h3>
+              {category?.length === 0 ? (
+                <h4 className="text-muted m-2">No Categories found ! Try creating one</h4>
+              ) : (
+                <div className="table-responive">
+                  <table className="table w-75">
+                    <thead className="thead-dark">
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {category?.map((item, i) => {
+                        return (
+                          <tr key={item._id}>
+                            <th scope="row">{i + 1}</th>
+                            <td>{item.name}</td>
+                            <td>
+                              <button
+                                className="btn btn-secondary m-2"
+                                onClick={() => {
+                                  setUpdatedName(item.name);
+                                  showModal();
+                                  setSelected(item);
+                                }}
+                              >
+                                Edit
+                              </button>
+                              <button
+                                className="btn btn-danger m-2"
+                                onClick={() => {
+                                  showDeleteModal();
+                                  setSelected(item);
+                                }}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
           <Modal

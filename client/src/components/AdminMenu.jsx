@@ -19,6 +19,9 @@ export default function AdminMenu() {
         <NavLink to = "/dashboard/admin/users" className="list-group-item list-group-item-action">
           USERS
         </NavLink>
+        <NavLink to = "/dashboard/admin/products" className="list-group-item list-group-item-action">
+          PRODUCTS
+        </NavLink>
         
       </div>
     

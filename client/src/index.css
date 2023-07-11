@@ -2,3 +2,7 @@
     margin: 0;
     padding: 0;
 }
+.active {
+    color: black !important;
+    background-color: #F0EEED !important;
+}

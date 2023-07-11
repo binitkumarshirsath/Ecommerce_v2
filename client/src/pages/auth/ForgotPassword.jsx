@@ -6,9 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 export default function ForgotPassword() {
   const [user, setUser] = useState({
-    
     email: "",
-    answer : "",
+    answer: "",
     newPassword: "",
   });
   const navigate = useNavigate();
@@ -31,13 +30,13 @@ export default function ForgotPassword() {
       toast("Password should be at least 6 characters long");
       return;
     }
-   
+
     try {
       const response = await axios.post(
-        process.env.REACT_APP_API+"api/forgetpassword",
+        process.env.REACT_APP_API + "api/forgetpassword",
         user
       );
-      
+
       if (response.data.success) {
         toast("USER PASSWORD UPDATED!");
         setUser({
@@ -48,10 +47,9 @@ export default function ForgotPassword() {
         setTimeout(() => {
           navigate("/login");
         }, 2000);
-      }else{
+      } else {
         toast(response.data.message);
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -80,7 +78,6 @@ export default function ForgotPassword() {
                         className="mx-1 mx-md-4"
                         onSubmit={handleFormSubmit}
                       >
-                        
                         <div className="d-flex flex-row align-items-center mb-4">
                           <i className="fas fa-envelope fa-lg me-3 fa-fw" />
                           <div className="form-outline flex-fill mb-0">
@@ -135,8 +132,7 @@ export default function ForgotPassword() {
                             </label>
                           </div>
                         </div>
-                        
-                        
+
                         <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                           <button
                             type="submit"

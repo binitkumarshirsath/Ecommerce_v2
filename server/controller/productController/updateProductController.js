@@ -6,17 +6,12 @@ export default async function updateProductController(req, res) {
     const { name, description, price, category, isShipping, quantity } =
       req.fields;
     const { photo } = req.files;
-    if (!name || !description || !price || !category || !photo || !quantity) {
+    if (!name || !description || !price || !category  || !quantity) {
       return res
         .status(200)
         .json({ success: false, message: "Empty fields found" });
     }
 
-    if (photo.size > 100000) {
-      return res
-        .status(200)
-        .json({ success: false, message: "Photo size limit crossed" });
-    }
 
     
     const {pid} = req.params;

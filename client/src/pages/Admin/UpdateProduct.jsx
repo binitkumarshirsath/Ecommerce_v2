@@ -5,23 +5,47 @@ import axios from "axios";
 import { Select } from "antd";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 const { Option } = Select;
-export default function CreateProduct() {
-
+export default function UpdateProduct() {
+  const params = useParams();
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState({
     name: "",
     description: "",
     price: "",
-    photo: "",
     isShipping: "",
     category: "",
     quantity: "",
   });
+  const[photo,setPhoto] = useState("");
   useEffect(() => {
     getAllCategories();
+    getSingleProduct();
   }, []);
+  const [id, setId] = useState();
+  async function getSingleProduct() {
+    try {
+      const { data } = await axios.get(
+        process.env.REACT_APP_API + `api/product/get-product/${params.slug}`
+      );
+      // console.log(data.product); forgot photo had a diff route ;-;
+      setId(data.product._id);
+      setProduct({
+        name: data.product.name,
+        description: data.product.description,
+        price: data.product.price,
+        isShipping: data.product.isShipping,
+        category: data.product.category._id,
+        quantity: data.product.quantity,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   async function getAllCategories() {
     try {
       const { data } = await axios.get(
@@ -41,7 +65,6 @@ export default function CreateProduct() {
         !product.name ||
         !product.description ||
         !product.price ||
-        !product.photo ||
         !product.category ||
         !product.quantity
       ) {
@@ -57,13 +80,13 @@ export default function CreateProduct() {
       formData.append("name", product.name);
       formData.append("description", product.description);
       formData.append("price", product.price);
-      formData.append("photo", product.photo);
+      photo && formData.append("photo", photo);
       formData.append("isShipping", product.isShipping);
       formData.append("category", product.category);
       formData.append("quantity", product.quantity);
 
-      const response = await axios.post(
-        process.env.REACT_APP_API + "api/product/create-product",
+      const response = await axios.put(
+        process.env.REACT_APP_API + `api/product/update-product/${id}`,
         formData,
         {
           headers: {
@@ -79,27 +102,35 @@ export default function CreateProduct() {
         },1000) 
       }
     } catch (error) {
-      toast.error("Error while creating product");
+      toast.error("Error while updating product");
       console.log(error);
     }
   }
-
+  
   function handleOnChange(e) {
-    const { name, value } = e.target;
-    if (name === "photo") {
-      const file = e.target.files[0];
-      if (file) {
-        setProduct((prevValue) => {
-          return { ...prevValue, photo: file };
-        });
-      }
-    } else {
-      setProduct((prevValue) => {
-        return { ...prevValue, [name]: value };
-      });
-    }
+    const{name,value} = e.target;
+    setProduct((prevData)=>({
+      ...prevData,
+      [name] : value
+    }))
   }
 
+  async function handleDelete(e){
+    e.preventDefault();
+    try{
+      const response = await axios.delete( process.env.REACT_APP_API + `api/product/delete-product/${id}`);
+      console.log(response);
+      if(response.data.success){
+        toast.success(response.data.message);
+        setTimeout(()=>{
+          navigate('/dashboard/admin/products')
+        },1000) 
+      }
+      console.log(response);
+    }catch(error){
+      console.log(error);
+    }
+  }
   return (
     <Layout>
       <div className="container-fluid">
@@ -108,12 +139,13 @@ export default function CreateProduct() {
             <AdminMenu />
           </div>
           <div className="col-md-9">
-            <h2 className="mb-2">Create Product</h2>
+            <h2 className="mb-2">Update Product</h2>
             <Select
               showSearch
               showArrow
               placeholder="Select Category"
               className="w-50 "
+              value={product.category}
               onChange={(value) =>
                 setProduct((prevValue) => ({
                   ...prevValue,
@@ -129,11 +161,24 @@ export default function CreateProduct() {
                 );
               })}
             </Select>
+
             <div className="mb-2">
-              {product.photo && (
+              {!photo ? (
                 <div className="text-left">
                   <img
-                    src={URL.createObjectURL(product.photo)}
+                    src={
+                      process.env.REACT_APP_API + `api/product/get-photo/${id}`
+                    }
+                    // onChange={(e)=>{setPhoto(process.env.REACT_APP_API + `api/product/get-photo/${id}`)}}
+                    className="img img-responsive"
+                    height={"200px"}
+                    alt="product-photo"
+                  />
+                </div>
+              ) : (
+                <div className="text-left">
+                  <img
+                    src={URL.createObjectURL(photo)}
                     className="img img-responsive"
                     height={"200px"}
                     alt="product-photo"
@@ -144,13 +189,13 @@ export default function CreateProduct() {
             <div className="mb-2">
               <label className="btn btn-outline-secondary mt-2">
                 {" "}
-                {product.photo ? product.photo.name : "Upload Photo"}
+                {photo ? photo.name : "Upload Photo"}
                 <input
                   type="file"
                   name="photo"
                   accept="image/*"
                   hidden
-                  onChange={handleOnChange}
+                  onChange={(e) => setPhoto(e.target.files[0])}
                 />
               </label>
             </div>
@@ -213,6 +258,7 @@ export default function CreateProduct() {
                       }))
                     }
                     name="isShipping"
+                    value={product.isShipping ? "TRUE" : "FALSE"}
                   >
                     <Option value={true}>TRUE</Option>
                     <Option value={false}>FALSE</Option>
@@ -221,10 +267,17 @@ export default function CreateProduct() {
                 <div className="form-group">
                   <button
                     type="submit"
-                    className="btn btn-success"
+                    className="btn btn-success me-4 mb-4"
                     onClick={handleOnClick}
                   >
-                    Create product
+                    Update product
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-danger ms-4 mb-4"
+                    onClick={handleDelete}
+                  >
+                    Delete product
                   </button>
                 </div>
               </form>

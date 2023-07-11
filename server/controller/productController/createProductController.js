@@ -2,6 +2,7 @@ import slugify from "slugify";
 import Product from "../../model/productModel.js";
 import fs from "fs";
 
+
 export default async function createProductController(req, res) {
   try {
     const { name, description, price, category, isShipping , quantity } = req.fields;
@@ -18,9 +19,6 @@ export default async function createProductController(req, res) {
         .json({ success: false, message: "Photo size limit crossed" });
     }
 
-    const {pid} = req.params;
-    const newProduct = await Product.findByIdAndUpdate({_id : pid},{...req.fields,slug : slugify(name)},{new:true})
-
     const product = new Product({
       ...req.fields,
       slug: slugify(name),
@@ -35,11 +33,11 @@ export default async function createProductController(req, res) {
 
     return res
       .status(200)
-      .json({ success: true, message: "Product updated successfully" });
+      .json({ success: true, message: "Product created successfully" });
   } catch (e) {
     console.log(e);
     return res
       .status(500)
-      .json({ success: false, message: "Error in product updation", e });
+      .json({ success: false, message: "Error in product creation", e });
   }
 }

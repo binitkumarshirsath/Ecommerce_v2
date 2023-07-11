@@ -13,6 +13,8 @@ import CreateProduct from "./pages/Admin/CreateProduct";
 import Users from "./pages/Admin/Users";
 import Orders from "./pages/User/Orders";
 import Profile from "./pages/User/Profile";
+import Products from "./pages/Admin/Products";
+import UpdateProduct from "./pages/Admin/UpdateProduct";
 
 export default function App() {
   return (
@@ -32,6 +34,8 @@ export default function App() {
         <Route path="/dashboard/admin/create-category" element = {<CreateCategory/>} />
         <Route path="/dashboard/admin/create-product" element = {<CreateProduct/>} />
         <Route path="/dashboard/admin/users" element = {<Users/>} />
+        <Route path="/dashboard/admin/products" element = {<Products/>} />
+        <Route path="/dashboard/admin/products/update-product/:slug" element = {<UpdateProduct/>} />
       </Route>
       <Route path="/*" element={<PageNotFound />} />
     </Routes>
