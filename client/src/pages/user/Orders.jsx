@@ -3,6 +3,7 @@ import Layout from "../../components/Layout/Layout";
 import UserMenu from "../../components/UserMenu";
 import "./Orders.css";
 import axios from "axios";
+import moment from 'moment'
 import { useAuth } from "../../context/authContext";
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -14,6 +15,7 @@ export default function Orders() {
       );
       setOrders(response.data.order);
       
+      
     } catch (error) {
       console.log(error);
     }
@@ -21,73 +23,69 @@ export default function Orders() {
   useEffect(() => {
     getOrders();
   }, [auth?.token]);
-  {console.log(orders)}
   return (
-    <Layout>
-      <div className="m-3 p-3">
-        <div className="row">
-          <div className="col-md-3">
-            <UserMenu />
-          </div>
-          <div className="col-md-9">
-            <div className="container mt-5">
-              <div className="d-flex justify-content-center row">
-                <div className="col-md-10">
-                  <div className="rounded">
-                    <div className="table-responsive table-borderless">
-                      {orders?.map((item, i) => {
-                        return (
-                          <table key={item._id} className="table">
-                            <thead>
-                              <tr>
-                                <th>
-                                  Created at :{" "}
-                                  {new Date(
-                                    item.createdAt
-                                  ).toLocaleDateString()}
-                                </th>
-                                <th>Company name</th>
-                                <th>status</th>
-                                <th>Total</th>
-                                <th>Created</th>
-                                <th />
-                              </tr>
-                            </thead>
-                            {item.products? (
-                              item.products.map((p,i)=>{
-                                return <tbody key={i} className="table-body">
-                                <tr className="cell-1">
-                                  {console.log(p)}
-                                  <td>{i+1}</td>
-                                  <td>{p.name}</td>
-                                  <td>
-                                    <span className="badge badge-success">
-                                      Fullfilled
-                                    </span>
-                                  </td>
-                                  <td>$2674.00</td>
-                                  <td>Today</td>
-                                  <td>
-                                    <i className="fa fa-ellipsis-h text-black-50" />
-                                  </td>
-                                </tr>
-                              </tbody>
-                              })
-                              
-                            ) : (
-                              <></>
-                            )}
-                          </table>
-                        );
-                      })}
+    <Layout >
+    <div className="container-flui p-3 m-3 dashboard">
+      <div className="row">
+        <div className="col-md-3">
+          <UserMenu />
+        </div>
+        <div className="col-md-9">
+          <h1 className="text-center">All Orders</h1>
+          {orders?.map((o, i) => {
+            return (
+              <div key={i} className="border shadow">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Buyer ID</th>
+                      <th scope="col"> date</th>
+                      <th scope="col">Payment</th>
+                      <th scope="col">Quantity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      
+                      <td>{i + 1}</td>
+                      <td>{o?.status}</td>
+                      <td>{o?.buyer}</td>
+                      <td>{moment(o?.createAt).fromNow()}</td>
+                      <td>{!o?.payment ? "Success" : "Failed"}</td>
+                      {/* <td>{o?.payment.success ? "Success" : "Failed"}</td> */}
+                      <td>{o?.products?.length}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="container">
+                  {o?.products?.map((p, i) => (
+                    <div className="row mb-2 p-3 card flex-row" key={p._id}>
+                      <div className="col-md-4">
+                        <img
+                          src={process.env.REACT_APP_API +
+                            `api/product/get-photo/${p._id}`}
+                          className="card-img-top"
+                          alt={p.name}
+                          width="100px"
+                          height={"150px"}
+                        />
+                      </div>
+                      <div className="col-md-8">
+                        <p>{p.name}</p>
+                        <p>{p.description.substring(0, 30)}</p>
+                        <p>Price : {p.price}</p>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
               </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
-    </Layout>
+    </div>
+  </Layout>
   );
 }

@@ -203,7 +203,7 @@ export default function HomePage() {
                     <div className="card-body">
                       <h5 className="card-title">{product.name}</h5>
                       <p className="card-text">{product.description}</p>
-                      <p className="card-text">$ {product.price}</p>
+                     <b> <p className="card-text " style={{color:"green"}}>$ {product.price}</p></b>
 
                       <button
                         className="btn btn-info mb-2 me-3"

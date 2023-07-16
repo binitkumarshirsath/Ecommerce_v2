@@ -8,12 +8,14 @@ import paymentRoute from './routes/payment.js'
 import orderRoute from './routes/order.js'
 import cors from 'cors'
 import Product from './model/productModel.js';
+import path from 'path';
 
 dotenv.config();
 connectDb();
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname,'../client/build')))
 
 app.use('/api',authRoute);
 app.use('/api/product',productRoute);
@@ -21,8 +23,8 @@ app.use('/api/category',categoryRoute);
 app.use('/api',paymentRoute);
 app.use('/api/order',orderRoute);
 
-app.get('/',(req,res)=>{
-    res.send('<h1>Welcome to the Binits Ecommerce app</h1>')
+app.use('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'../client/build/index.html'))
 })
 
 app.listen(process.env.PORT,()=>{

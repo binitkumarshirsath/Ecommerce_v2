@@ -1,28 +1,27 @@
 import mongoose from "mongoose";
+import User from "./userModel.js";
 import Product from "./productModel.js";
 
-const OrderSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema(
   {
     products: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.ObjectId,
         ref: Product.modelName,
       },
     ],
     payment: {},
     buyer: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: mongoose.ObjectId,
+      ref: User.modelName,
     },
     status: {
       type: String,
-      default: "Pending",
-      enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
+      default: "Not Process",
+      enum: ["Not Process", "Processing", "Shipped", "deliverd", "cancel"],
     },
   },
   { timestamps: true }
 );
 
-const Order = mongoose.model("Order", OrderSchema);
-
-export default Order;
+export default mongoose.model("Order", orderSchema);
