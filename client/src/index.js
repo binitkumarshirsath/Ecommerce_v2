@@ -8,6 +8,7 @@ import { AuthProvider } from "./context/authContext";
 import { SearchContextProvider } from "./context/searchContext";
 import { CartProvider } from "./context/cartContext";
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <AuthProvider>

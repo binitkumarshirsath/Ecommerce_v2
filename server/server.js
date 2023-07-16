@@ -27,9 +27,9 @@ app.use('/api/category', categoryRoute);
 app.use('/api', paymentRoute);
 app.use('/api/order', orderRoute);
 
-// app.use('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
-// });
+app.get('/',(req,res)=>{
+    res.send("Welcome to Safaris Backend!");
+})
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log('Server is up and running at PORT: ' + PORT);

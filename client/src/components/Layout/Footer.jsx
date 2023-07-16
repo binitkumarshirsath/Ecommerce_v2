@@ -138,7 +138,7 @@ export default function Footer() {
             <section className="footer-copyright border-top">
               <p className="float-left text-muted">
                 {" "}
-                © 2019 Talkdesk All rights resetved{" "}
+                © 2023 Safari - Binitech All rights reserved{" "}
               </p>
               <p className="float-right text-muted">
                 {" "}
