@@ -110,7 +110,7 @@ export default function CreateProduct() {
           <div className="col-md-9">
             <h2 className="mb-2">Create Product</h2>
             <Select
-              showSearch
+              
               showArrow
               placeholder="Select Category"
               className="w-50 "

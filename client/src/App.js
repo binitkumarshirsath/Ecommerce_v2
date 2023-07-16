@@ -15,14 +15,22 @@ import Orders from "./pages/User/Orders";
 import Profile from "./pages/User/Profile";
 import Products from "./pages/Admin/Products";
 import UpdateProduct from "./pages/Admin/UpdateProduct";
+import Category from "./components/Layout/Category";
+import SearchResult from "./pages/SearchResult";
+import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/product/:slug" element={<ProductDetails />} />
+      <Route path="/cart" element={<Cart />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/searchedProduct" element = {<SearchResult/>}/>
       <Route path="/forgetpassword" element={<ForgotPassword />} />
+      <Route path="/category/:slug" element = {<Category/>}/>
       <Route path="/dashboard" element={<PrivateRoute />}>
         <Route path="/dashboard/user" element={<Dashboard />} />
         <Route path="/dashboard/user/orders" element={<Orders />} />

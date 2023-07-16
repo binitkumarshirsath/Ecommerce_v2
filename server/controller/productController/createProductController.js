@@ -13,7 +13,7 @@ export default async function createProductController(req, res) {
         .json({ success: false, message: "Empty fields found" });
     }
 
-    if (photo.size > 100000) {
+    if (photo.size > 1000000) {
       return res
         .status(200)
         .json({ success: false, message: "Photo size limit crossed" });

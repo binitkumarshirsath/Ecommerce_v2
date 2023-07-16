@@ -44,7 +44,8 @@ export default function Products() {
                       />
                       <div className="card-body">
                         <h5 className="card-title">{product.name}</h5>
-                        <p className="card-text">{product.description}</p>
+                        <p className="card-text">{product.description.substring(30)}</p>
+                        <p className="card-text">$ {product.price}</p>
                         {/* <Link to={'/'} className="btn btn-secondary">
                           Go somewhere
                         </Link> */}

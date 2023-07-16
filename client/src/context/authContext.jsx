@@ -15,6 +15,7 @@ function AuthProvider({ children }) {
       const parsedData = JSON.parse(data);
       setAuth({...auth,user:parsedData.user,token:parsedData.token});
     }
+    
   },[])
 
   return (

@@ -6,6 +6,7 @@ import { isAdmin,requireSignIn } from "../middleware/authMiddleware.js";
 import test from "../controller/testController.js";
 import protectedRoute from "../controller/authController/protectedRoute.js";
 import forgetpasswordController from "../controller/authController/forgetPasswordController.js";
+import updateUserController from "../controller/authController/updateUserController.js";
 //Registration : Method POST
 router.post("/register",registerController);
 
@@ -21,7 +22,11 @@ router.get('/user-dashboard',requireSignIn,protectedRoute)
 //Protected Route
 router.get('/admin-dashboard',requireSignIn,isAdmin,protectedRoute);
 
+//Method put Update use
+router.put('/update-user',requireSignIn,updateUserController);
+
 //Forget password : Method post
 router.post('/forgetpassword',forgetpasswordController)
+
 
 export default router;

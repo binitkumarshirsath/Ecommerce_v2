@@ -7,6 +7,12 @@ import getSingleProductController from '../controller/productController/getSingl
 import getProductPhotoController from '../controller/productController/getProductPhotoController.js';
 import deleteProductController from '../controller/productController/deleteProductController.js';
 import updateProductController from '../controller/productController/updateProductController.js';
+import filteredProductController from '../controller/productController/filteredProductController.js';
+import getProductbyCategory from '../controller/productController/getProductbyCategory.js';
+import totalProductCountController from '../controller/productController/totalProductCountController.js';
+import getProductPageWiseController from '../controller/productController/getProductPageWiseController.js';
+import searchedProductController from '../controller/productController/searchedProductController.js';
+import similarProductController from '../controller/productController/similarProductController.js';
 const router = express.Router();
 
 //Method post Create product
@@ -26,5 +32,24 @@ router.delete('/delete-product/:pid',requireSignIn,isAdmin,deleteProductControll
 
 //Method put Update product
 router.put('/update-product/:pid',requireSignIn,isAdmin,formidable(),updateProductController);
+
+//Method post Filter Products
+router.post('/filtered-products',filteredProductController);
+
+//Method get Get product by category
+router.get('/product-category/:slug',getProductbyCategory);
+
+//Mehtod get , get total count 
+router.get('/product-count',totalProductCountController);
+
+//Method get , get product page wise
+router.get('/:page',getProductPageWiseController);
+
+//Method post get prodct based on search
+router.post('/search/:keywords',searchedProductController);
+
+//Method get , similar product basaed on category
+router.get('/related-product/:pid/:cid',similarProductController);
+
 
 export default router;

@@ -4,10 +4,28 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import SearchBar from "../Form/SearchBar";
 function Header() {
   const navigate = useNavigate();
   const [auth, setAuth] = useAuth();
+  const [categories,setCategories] = useState([]);
+  useEffect(() => {
+    getAllCategories();
+  }, []);
 
+  async function getAllCategories() {
+    try {
+      const { data } = await axios.get(
+        process.env.REACT_APP_API + "api/category/get-category"
+      );
+      if (data.success) setCategories(data.data);
+    } catch (e) {
+      
+      console.log(e);
+    }
+  }
   function handleLogout() {
     setAuth({
       ...auth,
@@ -17,6 +35,7 @@ function Header() {
     localStorage.removeItem("auth");
     navigate('/login');
   }
+  
   return (
     <Navbar expand="lg" className="bg-dark-subtle py-2 shadow">
       <Container>
@@ -25,15 +44,39 @@ function Header() {
             SAHARA
           </Link>
         </Navbar.Brand>
+        
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
+        <SearchBar/>
             <Nav.Link as={Link} to={"/"} style={{ color: "black" }}>
               HOME
             </Nav.Link>
-            <Nav.Link as={Link} to={"/products"} style={{ color: "black" }}>
-              PRODUCTS
-            </Nav.Link>
+            
+            <li className="nav-item dropdown">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="#"
+                    id="navbarDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    CATEGORIES
+                  </a>
+                  <div
+                    className="dropdown-menu"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    {categories?.map((category)=>{
+                      return <Nav.Link as={Link} key={category._id} to = {`/category/${category.slug}`} >
+                        {category.name}
+                        </Nav.Link>   
+                    })}
+                      
+                  </div>
+                </li>
             {!auth.user ? (
               <>
                 <Nav.Link as={Link} to={"/signup"} style={{ color: "black" }}>
@@ -83,6 +126,9 @@ function Header() {
                 </li>
               </>
             )}
+             <Nav.Link as={Link} to={"/cart"} style={{ color: "black" }}>
+                  CART
+                </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

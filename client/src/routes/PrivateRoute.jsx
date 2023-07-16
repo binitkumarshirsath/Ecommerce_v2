@@ -11,7 +11,7 @@ export default function PrivateRoute() {
         async function getStatus(){
             try {
                 const response = await axios.get(process.env.REACT_APP_API+'api/user-dashboard');
-                console.log(response.data);
+
                 if(response.data.success){
                     setOk(true);
                 }else{
