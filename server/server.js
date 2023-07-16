@@ -19,7 +19,7 @@ const __dirname = dirname(__filename);
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, '../client/build')));
+// app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.use('/api', authRoute);
 app.use('/api/product', productRoute);
