@@ -30,7 +30,7 @@ app.use('/api/order', orderRoute);
 // app.use('*', (req, res) => {
 //   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 // });
-
-app.listen(process.env.PORT, () => {
-  console.log('Server is up and running at PORT: ' + process.env.PORT);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log('Server is up and running at PORT: ' + PORT);
 });
